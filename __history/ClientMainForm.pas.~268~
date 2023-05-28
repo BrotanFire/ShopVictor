@@ -1,0 +1,469 @@
+unit ClientMainForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls,
+  Vcl.ExtCtrls,
+  Data.DB, Data.Win.ADODB;
+
+type
+  TClientForm = class(TForm)
+    PageControl1: TPageControl;
+    PorductList: TTabSheet;
+    Order: TTabSheet;
+    ADOConnection1: TADOConnection;
+    ADOQuery1: TADOQuery;
+    DataSource1: TDataSource;
+    SortBtn: TButton;
+    ScrollBox1: TScrollBox;
+    SearchEdit: TEdit;
+    ScrollBox2: TScrollBox;
+    ScrollBox3: TScrollBox;
+    OrderBtn: TButton;
+    ADOQuery2: TADOQuery;
+    ADOQuery3: TADOQuery;
+    ComboBox1: TComboBox;
+    DateTimePicker1: TDateTimePicker;
+    ADOQuery4: TADOQuery;
+    AddNewOrderSP: TADOStoredProc;
+    AddOrderProduct: TADOStoredProc;
+
+    procedure FormCreate(Sender: TObject);
+    procedure FormHide(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure SearchEditChange(Sender: TObject);
+    procedure SortBtnClick(Sender: TObject);
+    procedure OrderShow(Sender: TObject);
+    procedure OrderBtnClick(Sender: TObject);
+    procedure PorductListShow(Sender: TObject);
+  private
+    pnl: TFlowPanel;
+  public
+    function FindPanelByTag(ParentControl: TWinControl; Tag: Integer): TFlowPanel;
+    function FindEditByTag(ParentControl: TWinControl; Tag: Integer): TEdit;
+    procedure ShowProduct(ordr: Integer; search: bool);
+    procedure AddProduct(Sender: TObject);
+    procedure DelProduct(Sender: TObject);
+    procedure ShowAddetProduct(id: Integer);
+    procedure DelProduct2(Sender: TObject);
+  end;
+
+var
+  useraccount: Integer;
+  ShopKart: TArray<Integer>;
+  ClientForm: TClientForm;
+  counter: Integer;
+  SearchString: String;
+
+implementation
+
+{$R *.dfm}
+
+procedure TClientForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Application.Terminate;
+end;
+
+procedure TClientForm.FormCreate(Sender: TObject);
+begin
+  counter := 0;
+  ShowProduct(0, false);
+  SetLength(ShopKart, 1);
+end;
+
+procedure TClientForm.FormHide(Sender: TObject);
+begin
+  Application.Terminate;
+end;
+
+function TClientForm.FindEditByTag(ParentControl: TWinControl;
+  Tag: Integer): TEdit;
+var
+  i: Integer;
+begin
+  Result := nil;
+  for i := 0 to ParentControl.ControlCount - 1 do
+  begin
+    if (ParentControl.Controls[i].Tag = Tag) and
+      (ParentControl.Controls[i] is TEdit) then
+    begin
+      Result := TEdit(ParentControl.Controls[i]);
+      Exit;
+    end
+    else if ParentControl.Controls[i] is TWinControl then
+    begin
+      Result := FindEditByTag(TWinControl(ParentControl.Controls[i]), Tag);
+      if Result <> nil then
+        Exit;
+    end;
+  end;
+end;
+function TClientForm.FindPanelByTag(ParentControl: TWinControl;
+  Tag: Integer): TFlowPanel;
+var
+  i: Integer;
+begin
+  Result := nil;
+  for i := 0 to ParentControl.ControlCount - 1 do
+  begin
+    if (ParentControl.Controls[i].Tag = Tag) and
+      (ParentControl.Controls[i] is TFlowPanel) then
+    begin
+      Result := TFlowPanel(ParentControl.Controls[i]);
+      Exit;
+    end
+    else if ParentControl.Controls[i] is TWinControl then
+    begin
+      Result := FindPanelByTag(TWinControl(ParentControl.Controls[i]), Tag);
+      if Result <> nil then
+        Exit;
+    end;
+  end;
+end;
+
+procedure TClientForm.OrderBtnClick(Sender: TObject);
+var
+  empi: bool;
+  i, j, a,l: Integer;
+  EditControl: TEdit;
+begin
+  for l := 0 to Length(ShopKart) - 2 do
+  begin
+    if ShopKart[l]<>0 then
+    begin
+       empi := true;
+       break;
+    end;
+  end;
+  if (ComboBox1.Text <> 'Адрес') and (Length(ShopKart) > 1) and (empi = true) then
+    try
+      begin
+        AddNewOrderSP.Close;
+        AddNewOrderSP.Parameters.ParamByName('@OrderDate').Value :=
+          DateToStr(DateTimePicker1.Date);
+        AddNewOrderSP.Parameters.ParamByName('@PickupPoint').Value :=
+          ComboBox1.ItemIndex;
+        AddNewOrderSP.Parameters.ParamByName('@Account').Value := useraccount;
+        AddNewOrderSP.ExecProc;
+        for i := 0 to Length(ShopKart) - 2 do
+        begin
+           if ShopKart[i] = 0 then
+           Continue;
+          //ShowMessage(IntToStr(ShopKart[i]));
+          AddOrderProduct.Close;
+          AddOrderProduct.Parameters.ParamByName('@ProductId').Value :=
+            ShopKart[i];
+          AddOrderProduct.Parameters.ParamByName('@OrderId').Value :=
+            AddNewOrderSP.Parameters.ParamByName('@OrderId').Value;
+          EditControl := FindEditByTag(ScrollBox3, ShopKart[i]);
+          //ShowMessage(EditControl.Text);
+          AddOrderProduct.Parameters.ParamByName('@ProductNumber').Value :=
+            strtoint(EditControl.Text);
+          AddOrderProduct.ExecProc;
+        end;
+      end;
+    finally
+      begin
+        ShowMessage('Заказ добавлен');
+      end;
+    end;
+end;
+
+procedure TClientForm.OrderShow(Sender: TObject);
+var
+  i, j: Integer;
+  Img: TImage;
+  Txt: TLabel;
+  Txt2: TLabel;
+  Pan: TPanel;
+  addbtn: TButton;
+begin
+  ADOQuery2.Close;
+  ADOQuery2.SQL.Clear;
+  ADOQuery2.SQL.Add('SELECT * FROM product');
+  ADOQuery2.Open;
+  while not ADOQuery2.Eof do
+  begin
+    // Создание новой панели
+    pnl := TFlowPanel.Create(Self);
+    pnl.Parent := ScrollBox2;
+    pnl.Align := alTop;
+    pnl.Height := 100;
+    pnl.Caption := '';
+    // Создание изображения
+    Img := TImage.Create(pnl);
+    Img := TImage.Create(pnl);
+    Img.Parent := pnl;
+    Img.Stretch :=true;
+    try
+      begin
+       Img.Picture.LoadFromFile('img/'+ADOQuery2.FieldByName('ProductArticleNumber').AsString+'.bmp');
+      end;
+    except
+       Img.Picture.LoadFromFile('img/0.bmp');
+    end;
+    Img.Width := 100;
+    Img.Height := 100;
+    // Создание текстовой метки
+    Txt := TLabel.Create(pnl);
+    Txt.Parent := pnl;
+    Txt.Caption := ADOQuery2.FieldByName('ProductName').AsString + #13#10 +
+      ADOQuery2.FieldByName('ProductDescription').AsString + #13#10 +
+      ADOQuery2.FieldByName('ProductManufacturer').AsString + #13#10 +
+      ADOQuery2.FieldByName('ProductCost').AsString + ' Руб';
+    Txt.font.size:=14;
+    Txt2 := TLabel.Create(pnl);
+    Txt2.Parent := pnl;
+    Txt2.Caption := #13#10 + ADOQuery2.FieldByName('ProductDiscountAmount')
+      .AsString + '%  ';
+    Pan := TPanel.Create(pnl);
+    Txt2.font.size:=14;
+    Pan.Height := 100;
+    Pan.BevelOuter := bvNone;
+    Pan.Width := 100;
+    Pan.Caption := '';
+    Pan.Parent := pnl;
+    addbtn := TButton.Create(Pan);
+    addbtn.Parent := pan;
+    addbtn.Top := 15;
+    addbtn.Caption := '+';
+    addbtn.Tag := ADOQuery2.FieldByName('ProductArticleNumber').AsInteger;
+    addbtn.OnClick := AddProduct;
+    if ADOQuery2.FieldByName('ProductDiscountAmount').AsInteger > 15 then
+    begin
+    end;
+    ADOQuery2.Next;
+  end;
+end;
+
+procedure TClientForm.PorductListShow(Sender: TObject);
+var
+  i: Integer;
+begin
+  ADOQuery4.Close;
+  ADOQuery4.Open;
+  ComboBox1.items.Clear;
+  while not ADOQuery4.Eof do
+  begin
+    ComboBox1.items.Add(ADOQuery4.FieldByName('address').AsString);
+    ADOQuery4.Next;
+  end;
+  for i := ScrollBox2.ControlCount - 1 downto 0 do
+    ScrollBox2.RemoveControl(ScrollBox2.Controls[i]);
+  for i := ScrollBox3.ControlCount - 1 downto 0 do
+    ScrollBox3.RemoveControl(ScrollBox3.Controls[i]);
+  SetLength(ShopKart, 0);
+  SetLength(ShopKart, 1);
+end;
+
+procedure TClientForm.SearchEditChange(Sender: TObject);
+begin
+  SearchString := SearchEdit.Text;
+  if (counter > 0) and (SearchString <> '') then
+    ShowProduct(1, true)
+  else if (counter = 0) and (SearchString <> '') then
+    ShowProduct(0, true)
+  else if (counter > 0) and (SearchString = '') then
+    ShowProduct(1, false)
+  else if (counter = 0) and (SearchString = '') then
+    ShowProduct(0, false)
+end;
+
+procedure TClientForm.ShowProduct(ordr: Integer; search: bool);
+var
+  i, j: Integer;
+  Img: TImage;
+  Txt: TLabel;
+  Txt2: TLabel;
+  Pan: TPanel;
+begin
+  ADOQuery1.Close;
+  ADOQuery1.SQL.Clear;
+  ADOQuery1.SQL.Add('SELECT * FROM product ');
+  if (search = true) then
+  begin
+    ADOQuery1.SQL.Add('WHERE ProductName LIKE ''%' + SearchString + '%'' ');
+  end;
+  if (counter = 1) or (counter = 0) and (ordr = 1) then
+  begin
+    counter := 2;
+    ADOQuery1.SQL.Add('ORDER BY ProductCost ASC');
+  end
+  else if (counter = 2) and (ordr = 1) then
+  begin
+    counter := 1;
+    ADOQuery1.SQL.Add('ORDER BY ProductCost DESC');
+  end;
+
+  for i := ScrollBox1.ControlCount - 1 downto 0 do
+    ScrollBox1.RemoveControl(ScrollBox1.Controls[i]);
+  ADOQuery1.Open;
+
+  while not ADOQuery1.Eof do
+  begin
+    // Создание новой панели
+    pnl := TFlowPanel.Create(Self);
+    pnl.Parent := ScrollBox1;
+    pnl.Align := alTop;
+    pnl.Height := 200;
+    pnl.Caption := '';
+    // Создание изображения
+    Img := TImage.Create(pnl);
+    Img.Parent := pnl;
+    Img.Stretch :=true;
+    try
+      begin
+       Img.Picture.LoadFromFile('img/'+ADOQuery1.FieldByName('ProductArticleNumber').AsString+'.bmp');
+      end;
+    except
+       Img.Picture.LoadFromFile('img/0.bmp');
+    end;
+    Img.Width := 200;
+    Img.Height := 200;
+    // Создание текстовой метки
+    Txt := TLabel.Create(pnl);
+    Txt.Parent := pnl;
+    Txt.font.size:=20;
+    Txt.Caption := ADOQuery1.FieldByName('ProductName').AsString + #13#10 +
+      ADOQuery1.FieldByName('ProductDescription').AsString + #13#10 +
+      ADOQuery1.FieldByName('ProductManufacturer').AsString + #13#10 +
+      ADOQuery1.FieldByName('ProductCost').AsString + ' Руб';
+    Pan := TPanel.Create(pnl);
+    Pan.Height := 60;
+    Pan.BevelOuter := bvNone;
+    Pan.Width := 50;
+    Pan.Caption := '';
+    Pan.Parent := pnl;
+    Txt2 := TLabel.Create(pnl);
+    Txt2.Parent := pnl;
+    Txt2.font.size:=20;
+    Txt2.Caption := #13#10 + ADOQuery1.FieldByName('ProductDiscountAmount')
+      .AsString + '%';
+    if ADOQuery1.FieldByName('ProductDiscountAmount').AsInteger > 15 then
+    begin
+    end;
+    ADOQuery1.Next;
+  end;
+end;
+
+procedure TClientForm.SortBtnClick(Sender: TObject);
+begin
+  if SearchString = '' then
+    ShowProduct(1, false)
+  else
+    ShowProduct(1, true);
+end;
+
+procedure TClientForm.AddProduct(Sender: TObject);
+var
+  i: Integer;
+begin
+  for i := 0 to Length(ShopKart) do
+  begin
+    if ShopKart[i] = (Sender as TButton).Tag then
+    begin
+      Exit;
+    end;
+  end;
+  ShopKart[Length(ShopKart) - 1] := (Sender as TButton).Tag;
+  SetLength(ShopKart, Length(ShopKart) + 1);
+  ShowAddetProduct((Sender as TButton).Tag);
+end;
+
+procedure TClientForm.ShowAddetProduct(id: Integer);
+var
+  i, j: Integer;
+  Img: TImage;
+  Txt: TLabel;
+  Txt2: TLabel;
+  Pan: TPanel;
+  CEdit: TEdit;
+  DelBtn: TButton;
+begin
+  ADOQuery3.Close;
+  ADOQuery3.SQL.Clear;
+  ADOQuery3.SQL.Add('SELECT * FROM product where ProductArticleNumber = ' +
+    id.ToString);
+  ADOQuery3.Open;
+  pnl := TFlowPanel.Create(Self);
+  pnl.Tag:=id;
+  pnl.Parent := ScrollBox3;
+  pnl.Align := alTop;
+  pnl.Height := 100;
+  pnl.Caption := '';
+  // Создание изображения
+  Img := TImage.Create(pnl);
+  Img.Parent := pnl;
+  Img.Stretch :=true;
+    try
+      begin
+       Img.Picture.LoadFromFile('img/'+inttostr(id)+'.bmp');
+      end;
+    except
+       Img.Picture.LoadFromFile('img/0.bmp');
+    end;
+    Img.Width := 100;
+    Img.Height := 100;
+  // Создание текстовой метки
+  Txt := TLabel.Create(pnl);
+  Txt.Parent := pnl;
+  Txt.Caption := ADOQuery3.FieldByName('ProductName').AsString + #13#10 +
+    ADOQuery3.FieldByName('ProductDescription').AsString + #13#10 +
+    ADOQuery3.FieldByName('ProductManufacturer').AsString + #13#10 +
+    ADOQuery3.FieldByName('ProductCost').AsString + ' Руб';
+    Txt2 := TLabel.Create(pnl);
+  Txt2.Parent := pnl;
+  Txt.font.size:=14;
+  Txt2.Caption := #13#10 + ADOQuery3.FieldByName('ProductDiscountAmount')
+    .AsString + '% ';
+    Txt2.font.size:=14;
+  Pan := TPanel.Create(pnl);
+  Pan.BevelOuter := bvNone;
+  Pan.Caption := '';
+  Pan.Parent := pnl;
+  Pan.Width:=100;
+  Pan.Height:=100;
+  Pan.SendToBack;
+  CEdit := TEdit.Create(Pan);
+  CEdit.Tag := id;
+  CEdit.Width:=40;
+  CEdit.Parent := Pan;
+  CEdit.NumbersOnly := true;
+  CEdit.Text := '1';
+  CEdit.OnChange:= DelProduct2;
+  DelBtn := TButton.Create(Pan);
+  DelBtn.Caption := '-';
+  DelBtn.Top :=25;
+  DelBtn.Tag := id;
+  DelBtn.OnClick := DelProduct;
+  DelBtn.Parent := Pan;
+end;
+procedure  TClientForm.DelProduct(Sender: TObject);
+var
+i: integer;
+begin
+   FindPanelByTag(ScrollBox3,(Sender as TButton).Tag).Destroy;
+   for i := 0 to Length(ShopKart) - 2 do
+        begin
+           if ShopKart[i] = (Sender as TButton).Tag then
+           ShopKart[i] := 0;
+        end;
+end;
+procedure  TClientForm.DelProduct2(Sender: TObject);
+var
+i: integer;
+begin
+   if (strtoint((Sender as TEdit).Text) = 0) then
+   begin
+   for i := 0 to Length(ShopKart) - 2 do
+        begin
+           if ShopKart[i] = (Sender as TButton).Tag then
+           ShopKart[i] := 0;
+        end;
+   end;
+   FindPanelByTag(ScrollBox3,(Sender as TEdit).Tag).Destroy;
+end;
+end.

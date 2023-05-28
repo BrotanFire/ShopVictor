@@ -1,0 +1,109 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Log in'
+  ClientHeight = 299
+  ClientWidth = 635
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 200
+    Top = 72
+    Width = 25
+    Height = 13
+    Caption = 'Login'
+  end
+  object Label2: TLabel
+    Left = 200
+    Top = 141
+    Width = 46
+    Height = 13
+    Caption = 'Password'
+  end
+  object PasswordName: TEdit
+    Left = 200
+    Top = 160
+    Width = 257
+    Height = 21
+    PasswordChar = '*'
+    TabOrder = 0
+  end
+  object LoginEdit: TEdit
+    Left = 200
+    Top = 101
+    Width = 257
+    Height = 21
+    TabOrder = 1
+  end
+  object LoginBtn: TButton
+    Left = 296
+    Top = 187
+    Width = 75
+    Height = 25
+    Caption = 'Login'
+    TabOrder = 2
+    OnClick = LoginBtnClick
+  end
+  object Conn: TADOConnection
+    Connected = True
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
+      'fo=False;Initial Catalog=VictorShop;Data Source=DESKTOP-H9FO4E8'
+    Provider = 'SQLOLEDB.1'
+    Left = 568
+    Top = 56
+  end
+  object AuthPC: TADOStoredProc
+    Connection = Conn
+    ProcedureName = 'SP_Login;1'
+    Parameters = <
+      item
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        Direction = pdReturnValue
+        Precision = 10
+        Value = Null
+      end
+      item
+        Name = '@Username'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 50
+        Value = Null
+      end
+      item
+        Name = '@Password'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 50
+        Value = Null
+      end
+      item
+        Name = '@AccountType'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Direction = pdInputOutput
+        Precision = 10
+        Value = Null
+      end
+      item
+        Name = '@AccountId'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Direction = pdInputOutput
+        Precision = 10
+        Value = Null
+      end>
+    Left = 568
+    Top = 8
+  end
+end

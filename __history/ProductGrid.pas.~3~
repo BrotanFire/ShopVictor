@@ -1,0 +1,47 @@
+unit ProductGrid;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Data.Win.ADODB, Vcl.Grids,
+  Vcl.DBGrids;
+
+type
+  TForm2 = class(TForm)
+    DBGrid1: TDBGrid;
+    ProductQuery: TADOQuery;
+    ADOConnection1: TADOConnection;
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    id: integer;
+  end;
+
+var
+  Form2: TForm2;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm2.FormShow(Sender: TObject);
+begin
+var
+DataSource1: TDataSource;
+begin
+try
+ProductQuery.close;
+ProductQuery.SQL.Text := 'SELECT * FROM PorductListView where OrderID = ' + inttostr(id);
+ProductQuery.Open;
+DataSource1 := TDataSource.Create(nil);
+DataSource1.DataSet := ProductQuery;
+finally
+DBGrid1.DataSource := DataSource1;
+DBGRid1.Repaint;
+end;
+end;
+end;
+
+end.

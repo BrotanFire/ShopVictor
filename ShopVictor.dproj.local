@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.263,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Unit4.pas=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\AdminMainForm.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.063,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor.dproj=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\ShopVictor.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.478,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\VictorOrder.dproj=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.840,=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Unit4.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.667,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\AuthForm.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.324,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Unit2.dfm=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ClientMainForm.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.830,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Unit3.dfm=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ManagerMainForm.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.457,=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.324,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Unit2.pas=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ClientMainForm.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.667,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\AuthForm.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.679,=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.420,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ClientMainForm.dfm=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\ClientMainForm.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.420,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ClientMainForm.pas=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\ClientMainForm.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.830,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Unit3.pas=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ManagerMainForm.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.324,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ManagerMainForm.dfm=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\ManagerMainForm.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.372,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\AdminMainForm.pas=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\AdminMainForm.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.037,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\AuthForm.pas=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\AuthForm.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.602,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\VictorOrder.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.324,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ManagerMainForm.pas=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\ManagerMainForm.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.037,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\AuthForm.dfm=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\AuthForm.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.263,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Unit4.dfm=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\AdminMainForm.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.372,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\AdminMainForm.dfm=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\AdminMainForm.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.732,=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.041,=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023.05.28 12:23:58.716,=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\Unit2.pas</Transaction>
+    <Transaction>2023.05.28 12:24:14.846,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\OrderEdit.dfm=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\Unit2.dfm</Transaction>
+    <Transaction>2023.05.28 12:24:14.846,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\OrderEdit.pas=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\Unit2.pas</Transaction>
+    <Transaction>2023.05.28 12:29:46.314,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\OrderEdit.pas=</Transaction>
+    <Transaction>2023.05.28 13:51:50.028,=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\Unit2.pas</Transaction>
+    <Transaction>2023.05.28 13:54:25.260,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\ProductGrid.dfm=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\Unit2.dfm</Transaction>
+    <Transaction>2023.05.28 13:54:25.260,C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\ProductGrid.pas=C:\Users\Александр\Documents\Embarcadero\Studio\Projects\ShopVictor\Unit2.pas</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="AdminMainForm.pas"/>
+    <File Path="AdminMainForm.dfm"/>
+    <File Path="AuthForm.pas"/>
+    <File Path="AuthForm.dfm"/>
+    <File Path="ClientMainForm.pas"/>
+    <File Path="ClientMainForm.dfm"/>
+    <File Path="ManagerMainForm.pas"/>
+    <File Path="ManagerMainForm.dfm"/>
+    <File Path="ProductGrid.pas"/>
+    <File Path="ProductGrid.dfm"/>
+  </ProjectSortOrder>
+</BorlandProject>

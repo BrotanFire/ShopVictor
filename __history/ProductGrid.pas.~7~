@@ -1,0 +1,57 @@
+unit ProductGrid;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Data.Win.ADODB, Vcl.Grids,
+  Vcl.DBGrids;
+
+type
+  TForm2 = class(TForm)
+    DBGrid1: TDBGrid;
+    ProductQuery: TADOQuery;
+    ADOConnection1: TADOConnection;
+    procedure FormShow(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    id: integer;
+  end;
+
+var
+  Form2: TForm2;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm2.FormShow(Sender: TObject);
+begin
+var
+DataSource1: TDataSource;
+begin
+try
+ProductQuery.close;
+ProductQuery.SQL.Text := 'SELECT * FROM PorductListView where OrderID = ' + inttostr(id);
+ProductQuery.Open;
+DataSource1 := TDataSource.Create(nil);
+DataSource1.DataSet := ProductQuery;
+finally
+DBGrid1.DataSource := DataSource1;
+DBGRid1.Repaint;
+DBGRID1.Columns[0].Width:=0;
+DBGRID1.Columns[1].Width:=200;
+DBGRID1.Columns[1].Title.caption :='Название';
+DBGRID1.Columns[2].Width:=120;
+DBGRID1.Columns[2].Title.caption :='Описание';
+DBGRID1.Columns[3].Width:=50;
+DBGRID1.Columns[3].Title.caption :='Количество';
+DBGRID1.Columns[4].Width:=100;
+DBGRID1.Columns[4].Title.caption :='Цена';
+end;
+end;
+end;
+
+end.

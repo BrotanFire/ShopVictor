@@ -1,0 +1,122 @@
+object ManagerForm: TManagerForm
+  Left = 0
+  Top = 0
+  BorderStyle = bsSingle
+  Caption = 'ManagerForm'
+  ClientHeight = 410
+  ClientWidth = 1166
+  Color = clBtnFace
+  Font.Charset = RUSSIAN_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -19
+  Font.Name = 'Comic Sans MS'
+  Font.Style = []
+  OldCreateOrder = False
+  OnClose = FormClose
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 26
+  object Page: TPageControl
+    Left = 0
+    Top = 0
+    Width = 1166
+    Height = 410
+    ActivePage = ProductList
+    Align = alClient
+    TabOrder = 0
+    ExplicitWidth = 1155
+    ExplicitHeight = 400
+    object ProductList: TTabSheet
+      Caption = #1047#1072#1082#1072#1079#1099
+      object DBGrid1: TDBGrid
+        Left = 3
+        Top = 3
+        Width = 1030
+        Height = 353
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Comic Sans MS'
+        Font.Style = []
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+        ParentFont = False
+        TabOrder = 0
+        TitleFont.Charset = RUSSIAN_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -19
+        TitleFont.Name = 'Comic Sans MS'
+        TitleFont.Style = []
+      end
+      object Button1: TButton
+        Left = 1039
+        Top = 3
+        Width = 105
+        Height = 54
+        Caption = #1048#1079#1084#1077#1085#1080#1090#1100' '#1089#1090#1072#1090#1091#1089
+        TabOrder = 1
+        WordWrap = True
+        OnClick = Button1Click
+      end
+      object Button2: TButton
+        Left = 1039
+        Top = 63
+        Width = 105
+        Height = 42
+        Caption = #1057#1087#1080#1089#1086#1082
+        TabOrder = 2
+        OnClick = Button2Click
+      end
+    end
+    object OrdresList: TTabSheet
+      Caption = #1055#1088#1086#1076#1091#1082#1090#1099
+      ImageIndex = 1
+    end
+  end
+  object ADOConnection1: TADOConnection
+    Connected = True
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
+      'fo=False;Initial Catalog=VictorShop;Data Source=DESKTOP-H9FO4E8'
+    LoginPrompt = False
+    Provider = 'SQLOLEDB.1'
+    Left = 868
+    Top = 352
+  end
+  object ProductsTableQuery: TADOQuery
+    Connection = ADOConnection1
+    Parameters = <>
+    Left = 868
+    Top = 301
+  end
+  object ADODataSet1: TADODataSet
+    CommandType = cmdTable
+    Parameters = <>
+    Left = 868
+    Top = 253
+  end
+  object ADOStoredProc1: TADOStoredProc
+    Connection = ADOConnection1
+    ProcedureName = 'UpdateStatus;1'
+    Parameters = <
+      item
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        Direction = pdReturnValue
+        Precision = 10
+      end
+      item
+        Name = '@Id'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Precision = 10
+      end
+      item
+        Name = '@IsDone'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Precision = 10
+      end>
+    Left = 868
+    Top = 205
+  end
+end

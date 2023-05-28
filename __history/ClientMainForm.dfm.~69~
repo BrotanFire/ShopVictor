@@ -1,0 +1,223 @@
+object ClientForm: TClientForm
+  Left = 0
+  Top = 0
+  Caption = 'ClientForm'
+  ClientHeight = 525
+  ClientWidth = 998
+  Color = clBtnFace
+  Font.Charset = RUSSIAN_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Comic Sans MS'
+  Font.Style = []
+  OldCreateOrder = False
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnHide = FormHide
+  PixelsPerInch = 96
+  TextHeight = 18
+  object PageControl1: TPageControl
+    Left = 0
+    Top = 0
+    Width = 998
+    Height = 525
+    ActivePage = PorductList
+    Align = alClient
+    TabOrder = 0
+    ExplicitWidth = 953
+    ExplicitHeight = 369
+    object PorductList: TTabSheet
+      Caption = #1057#1087#1080#1089#1086#1082' '#1087#1088#1086#1076#1091#1082#1090#1086#1074
+      OnShow = PorductListShow
+      object SortBtn: TButton
+        Left = 850
+        Top = 3
+        Width = 137
+        Height = 25
+        Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1072#1090#1100' '#1087#1086' '#1094#1077#1085#1077
+        TabOrder = 0
+        OnClick = SortBtnClick
+      end
+      object ScrollBox1: TScrollBox
+        Left = 3
+        Top = 30
+        Width = 984
+        Height = 459
+        TabOrder = 1
+      end
+      object SearchEdit: TEdit
+        Left = 3
+        Top = 1
+        Width = 182
+        Height = 23
+        TabOrder = 2
+        OnChange = SearchEditChange
+      end
+    end
+    object Order: TTabSheet
+      Caption = #1047#1072#1082#1072#1079#1072#1090#1100
+      ImageIndex = 1
+      OnShow = OrderShow
+      object ScrollBox2: TScrollBox
+        Left = 3
+        Top = 30
+        Width = 486
+        Height = 459
+        TabOrder = 0
+      end
+      object ScrollBox3: TScrollBox
+        Left = 495
+        Top = 30
+        Width = 486
+        Height = 459
+        TabOrder = 1
+      end
+      object OrderBtn: TButton
+        Left = 899
+        Top = 3
+        Width = 82
+        Height = 25
+        Caption = #1047#1072#1082#1072#1079#1072#1090#1100
+        TabOrder = 2
+        OnClick = OrderBtnClick
+      end
+      object ComboBox1: TComboBox
+        Left = 3
+        Top = 3
+        Width = 358
+        Height = 26
+        TabOrder = 3
+        Text = #1040#1076#1088#1077#1089
+      end
+      object DateTimePicker1: TDateTimePicker
+        Left = 495
+        Top = -2
+        Width = 358
+        Height = 26
+        Date = 45073.000000000000000000
+        Time = 0.498221620371623400
+        TabOrder = 4
+      end
+    end
+  end
+  object ADOConnection1: TADOConnection
+    Connected = True
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
+      'fo=False;Initial Catalog=VictorShop;Data Source=DESKTOP-H9FO4E8'
+    Provider = 'SQLOLEDB.1'
+    Left = 184
+    Top = 128
+  end
+  object ADOQuery1: TADOQuery
+    Connection = ADOConnection1
+    CursorType = ctStatic
+    DataSource = DataSource1
+    Parameters = <>
+    SQL.Strings = (
+      'select * from Product')
+    Left = 288
+    Top = 32
+  end
+  object DataSource1: TDataSource
+    Left = 276
+    Top = 152
+  end
+  object ADOQuery2: TADOQuery
+    Connection = ADOConnection1
+    CursorType = ctStatic
+    DataSource = DataSource1
+    Parameters = <>
+    SQL.Strings = (
+      'select * from Product')
+    Left = 288
+    Top = 80
+  end
+  object ADOQuery3: TADOQuery
+    Connection = ADOConnection1
+    CursorType = ctStatic
+    DataSource = DataSource1
+    Parameters = <>
+    SQL.Strings = (
+      'select * from Product')
+    Left = 352
+    Top = 80
+  end
+  object ADOQuery4: TADOQuery
+    Connection = ADOConnection1
+    Parameters = <>
+    SQL.Strings = (
+      'select * from PickupPoint')
+    Left = 359
+    Top = 27
+  end
+  object AddNewOrderSP: TADOStoredProc
+    Connection = ADOConnection1
+    ProcedureName = 'AddNewOrder;1'
+    Parameters = <
+      item
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        Direction = pdReturnValue
+        Precision = 10
+      end
+      item
+        Name = '@OrderDate'
+        Attributes = [paNullable]
+        DataType = ftWideString
+        Size = 10
+      end
+      item
+        Name = '@PickupPoint'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Precision = 10
+      end
+      item
+        Name = '@Account'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Precision = 10
+      end
+      item
+        Name = '@OrderId'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Direction = pdInputOutput
+        Precision = 10
+      end>
+    Left = 194
+    Top = 191
+  end
+  object AddOrderProduct: TADOStoredProc
+    Connection = ADOConnection1
+    ProcedureName = 'AddNewOrderProduct;1'
+    Parameters = <
+      item
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        Direction = pdReturnValue
+        Precision = 10
+      end
+      item
+        Name = '@ProductId'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Precision = 10
+      end
+      item
+        Name = '@OrderId'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Precision = 10
+      end
+      item
+        Name = '@ProductNumber'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Precision = 10
+      end>
+    Left = 194
+    Top = 239
+  end
+end
