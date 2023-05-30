@@ -55,10 +55,12 @@ object Form1: TForm1
     OnClick = LoginBtnClick
   end
   object Conn: TADOConnection
-    Connected = True
     ConnectionString = 
       'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
-      'fo=False;Initial Catalog=VictorShop;Data Source=DESKTOP-H9FO4E8'
+      'fo=False;Initial Catalog=VictorShop;Data Source=DESKTOP-H9FO4E8;' +
+      'Use Procedure for Prepare=1;Auto Translate=True;Packet Size=4096' +
+      ';Workstation ID=DESKTOP-H9FO4E8;Use Encryption for Data=False;Ta' +
+      'g with column collation when possible=False'
     LoginPrompt = False
     Provider = 'SQLOLEDB.1'
     Left = 568

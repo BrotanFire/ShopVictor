@@ -145,7 +145,7 @@ begin
         AddNewOrderSP.Parameters.ParamByName('@OrderDate').Value :=
           DateToStr(DateTimePicker1.Date);
         AddNewOrderSP.Parameters.ParamByName('@PickupPoint').Value :=
-          ComboBox1.ItemIndex;
+          ComboBox1.ItemIndex+1;
         AddNewOrderSP.Parameters.ParamByName('@Account').Value := useraccount;
         AddNewOrderSP.ExecProc;
         for i := 0 to Length(ShopKart) - 2 do
@@ -248,7 +248,7 @@ begin
   ComboBox1.items.Clear;
   while not ADOQuery4.Eof do
   begin
-    ComboBox1.items.Add(ADOQuery4.FieldByName('address').AsString);
+    ComboBox1.items.Add(ADOQuery4.FieldByName('PostCode').AsString+ADOQuery4.FieldByName('Sity').AsString+ADOQuery4.FieldByName('Street').AsString+ADOQuery4.FieldByName('House').AsString);
     ADOQuery4.Next;
   end;
   for i := ScrollBox2.ControlCount - 1 downto 0 do

@@ -25,8 +25,6 @@ object ClientForm: TClientForm
     ActivePage = PorductList
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 991
-    ExplicitHeight = 525
     object PorductList: TTabSheet
       Caption = #1057#1087#1080#1089#1086#1082' '#1087#1088#1086#1076#1091#1082#1090#1086#1074
       OnShow = PorductListShow
